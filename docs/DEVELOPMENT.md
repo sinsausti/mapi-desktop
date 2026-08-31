@@ -68,6 +68,19 @@ Generated `.app`, `.dmg`, `target`, `dist`, and embedded-sidecar resources must 
 committed. Publish distributable binaries through GitHub Releases after signing and
 notarization.
 
+## Downloadable pre-releases
+
+The `Build downloadable macOS release` workflow creates an unsigned Apple Silicon ZIP
+and its SHA-256 checksum. Run it manually from the `main` branch and enter the version
+without the `v` prefix. The workflow requires that value to match the versions in
+`frontend/package.json`, `frontend/src-tauri/tauri.conf.json`, and
+`frontend/src-tauri/Cargo.toml`.
+
+After a successful build, GitHub creates a draft pre-release with both assets already
+attached. Review and edit its notes before publishing it. This draft-first sequence is
+required because published releases are immutable. Do not manually create the tag or
+release before running the workflow.
+
 ## Checks before a pull request
 
 ```bash

@@ -68,6 +68,17 @@ Market prices and exchange rates may be requested from public providers. Financi
 records are not intentionally sent to those providers. Read [Privacy](docs/PRIVACY.md)
 and [Security](SECURITY.md) before using real data.
 
+## Download the macOS app
+
+Pre-release builds for Apple Silicon are published on the
+[Releases page](https://github.com/sinsausti/mapi-desktop/releases) when a downloadable
+ZIP is available. Extract the ZIP and move `MAPI.app` to the Applications folder.
+
+Current preview builds are not signed or notarized. macOS may block the first launch.
+Only if you trust this repository and the downloaded file, follow Apple's
+[Open a Mac app from an unidentified developer](https://support.apple.com/guide/mac-help/mh40616/mac)
+instructions. The `.sha256` asset next to each ZIP can be used to verify its integrity.
+
 ## Build the macOS app from source
 
 ### 1. Install the requirements
