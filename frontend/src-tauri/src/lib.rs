@@ -33,7 +33,7 @@ pub fn run() {
             Ok(())
         })
         .build(tauri::generate_context!())
-        .expect("No se pudo iniciar MAPI");
+        .expect("MAPI could not start");
 
     app.run(|app, event| {
         if let RunEvent::Exit = event {

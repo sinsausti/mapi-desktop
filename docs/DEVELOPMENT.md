@@ -54,8 +54,9 @@ backend/.venv-desktop/bin/pip install -r backend/requirements-desktop.txt
 ./scripts/build-sidecar.sh
 ```
 
-The generated executable belongs under `frontend/src-tauri/binaries/` and is ignored
-by Git. Tauri bundles it as a localhost-only sidecar.
+The generated backend belongs under
+`frontend/src-tauri/resources/mapi-backend/` and is ignored by Git. Tauri bundles it
+as a localhost-only sidecar.
 
 ```bash
 cd frontend

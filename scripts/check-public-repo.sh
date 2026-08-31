@@ -20,6 +20,7 @@ while IFS= read -r -d '' file_item; do
       ;;
   esac
 done < <(find . -type f \
+  -not -path './.git' \
   -not -path './.git/*' \
   -not -path '*/node_modules/*' \
   -not -path '*/dist/*' \
@@ -27,6 +28,7 @@ done < <(find . -type f \
   -print0)
 
 if rg -n --hidden \
+  --glob '!**/.git' \
   --glob '!.git/**' \
   --glob '!**/node_modules/**' \
   --glob '!**/dist/**' \

@@ -42,3 +42,34 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: npm run build
+
+  desktop-build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Verify Apple Silicon runner
+        run: test "$(uname -m)" = "arm64"
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements-desktop.txt
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build packaged backend
+        run: ./scripts/build-sidecar.sh
+
+      - name: Build MAPI.app
+        working-directory: frontend
+        run: npm run desktop:build
