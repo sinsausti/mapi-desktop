@@ -1,0 +1,63 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.mobileprovision
+
+# Personal financial data and databases
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.dump
+*.backup
+database/
+backups/
+exports/
+outputs/
+work/
+private/
+statements/
+*.ofx
+*.qfx
+*.qif
+*.csv
+*.xls
+*.xlsx
+*.pdf
+
+# Generated application artifacts
+releases/
+*.dmg
+*.app
+*.pkg
+frontend/src-tauri/binaries/
+frontend/src-tauri/resources/mapi-backend/
+frontend/src-tauri/target/
+frontend/src-tauri/gen/
+backend/build/
+backend/dist/
+backend/*.spec
+.pyinstaller-cache/
+
+# Dependencies and caches
+node_modules/
+dist/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.venv-desktop/
+.coverage
+htmlcov/
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,20 @@
+{
+  "notice": "Fictional documentation fixture. Contains no real household data.",
+  "base_currency": "CAD",
+  "people": ["Person A", "Person B"],
+  "accounts": [
+    {"name": "Everyday Chequing", "type": "checking", "currency": "CAD", "owner": "joint", "opening_balance": 4250.00},
+    {"name": "Rewards Card", "type": "credit_card", "currency": "CAD", "owner": "joint", "opening_balance": -380.25},
+    {"name": "Retirement Portfolio", "type": "investment", "currency": "CAD", "owner": "person_a", "cash_balance": 750.00}
+  ],
+  "categories": [
+    {"name": "Housing", "type": "expense", "parent": null},
+    {"name": "Utilities", "type": "expense", "parent": "Housing"},
+    {"name": "Employment", "type": "income", "parent": null},
+    {"name": "Salary", "type": "income", "parent": "Employment"}
+  ],
+  "scheduled": [
+    {"description": "Salary", "frequency": "biweekly", "amount": 2500.00, "currency": "CAD"},
+    {"description": "Internet", "frequency": "monthly", "amount": -70.00, "currency": "CAD"}
+  ]
+}
