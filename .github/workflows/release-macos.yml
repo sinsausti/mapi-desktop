@@ -1,0 +1,93 @@
+name: Build downloadable macOS release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version without the v prefix, for example 0.1.13
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Verify release version and runner
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(uname -m)" = "arm64"
+          test "$(node -p "require('./frontend/package.json').version")" = "$RELEASE_VERSION"
+          test "$(node -p "require('./frontend/src-tauri/tauri.conf.json').version")" = "$RELEASE_VERSION"
+          test "$(sed -n 's/^version = "\([^"]*\)"/\1/p' frontend/src-tauri/Cargo.toml | head -1)" = "$RELEASE_VERSION"
+          if gh release view "v$RELEASE_VERSION" >/dev/null 2>&1; then
+            echo "Release v$RELEASE_VERSION already exists."
+            exit 1
+          fi
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements-desktop.txt
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build packaged backend
+        run: ./scripts/build-sidecar.sh
+
+      - name: Build MAPI.app
+        working-directory: frontend
+        run: npm run desktop:build
+
+      - name: Package download
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          mkdir -p release
+          archive="release/MAPI-Desktop-v${RELEASE_VERSION}-macOS-Apple-Silicon.zip"
+          ditto -c -k --sequesterRsrc --keepParent \
+            frontend/src-tauri/target/release/bundle/macos/MAPI.app \
+            "$archive"
+          shasum -a 256 "$archive" > "$archive.sha256"
+          printf '%s\n' \
+            '## Download' \
+            '' \
+            'Download the Apple Silicon ZIP attached below, extract it, and move MAPI.app to Applications.' \
+            '' \
+            '> This preview is not signed or notarized yet. macOS may require explicit approval in System Settings > Privacy & Security before opening it.' \
+            '' \
+            'The `.sha256` file can be used to verify the integrity of the download.' \
+            '' \
+            'See the README for features, privacy details, source-build instructions, and the pre-release disclaimer.' \
+            > release/notes.md
+
+      - name: Create draft pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          archive="release/MAPI-Desktop-v${RELEASE_VERSION}-macOS-Apple-Silicon.zip"
+          gh release create "v$RELEASE_VERSION" \
+            "$archive" \
+            "$archive.sha256" \
+            --draft \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "MAPI Desktop v$RELEASE_VERSION" \
+            --notes-file release/notes.md
