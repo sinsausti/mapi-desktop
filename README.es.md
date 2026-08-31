@@ -73,9 +73,10 @@ Las versiones preliminares para Apple Silicon se publican en la
 [página de Releases](https://github.com/sinsausti/mapi-desktop/releases) cuando existe
 un ZIP descargable. Extraé el ZIP y mové `MAPI.app` a la carpeta Aplicaciones.
 
-Las compilaciones preliminares actuales no están firmadas ni notarizadas. macOS puede
-bloquear el primer inicio. Solo si confiás en este repositorio y en el archivo
-descargado, seguí las instrucciones de Apple para
+Las compilaciones preliminares actuales tienen una firma de integridad ad-hoc, pero no
+están firmadas con un certificado Apple Developer ni notarizadas. macOS puede bloquear
+el primer inicio. Solo si confiás en este repositorio y en el archivo descargado, seguí
+las instrucciones de Apple para
 [abrir una app de un desarrollador no identificado](https://support.apple.com/es-lamr/guide/mac-help/mh40616/mac).
 El archivo `.sha256` junto a cada ZIP permite verificar su integridad.
 

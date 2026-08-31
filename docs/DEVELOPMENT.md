@@ -70,9 +70,10 @@ notarization.
 
 ## Downloadable pre-releases
 
-The `Build downloadable macOS release` workflow creates an unsigned Apple Silicon ZIP
-and its SHA-256 checksum. Run it manually from the `main` branch and enter the version
-without the `v` prefix. The workflow requires that value to match the versions in
+The `Build downloadable macOS release` workflow creates an Apple Silicon ZIP with an
+ad-hoc integrity signature and its SHA-256 checksum. Run it manually from the `main`
+branch and enter the version without the `v` prefix. The workflow requires that value
+to match the versions in
 `frontend/package.json`, `frontend/src-tauri/tauri.conf.json`, and
 `frontend/src-tauri/Cargo.toml`.
 
