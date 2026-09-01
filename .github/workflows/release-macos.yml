@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Version without the v prefix, for example 0.1.13
+        description: Version without the v prefix, for example 0.1.14
         required: true
         type: string
 
@@ -55,22 +55,32 @@ jobs:
         working-directory: frontend
         run: npm run desktop:build
 
+      - name: Ad-hoc sign and verify app bundle
+        run: |
+          app="frontend/src-tauri/target/release/bundle/macos/MAPI.app"
+          codesign --force --deep --sign - "$app"
+          codesign --verify --deep --strict --verbose=4 "$app"
+
       - name: Package download
         env:
           RELEASE_VERSION: ${{ inputs.version }}
         run: |
           mkdir -p release
-          archive="release/MAPI-Desktop-v${RELEASE_VERSION}-macOS-Apple-Silicon.zip"
+          archive_name="MAPI-Desktop-v${RELEASE_VERSION}-macOS-Apple-Silicon.zip"
+          archive="release/$archive_name"
           ditto -c -k --sequesterRsrc --keepParent \
             frontend/src-tauri/target/release/bundle/macos/MAPI.app \
             "$archive"
-          shasum -a 256 "$archive" > "$archive.sha256"
+          (cd release && shasum -a 256 "$archive_name" > "$archive_name.sha256")
+          verification_dir="$(mktemp -d)"
+          ditto -x -k "$archive" "$verification_dir"
+          codesign --verify --deep --strict --verbose=4 "$verification_dir/MAPI.app"
           printf '%s\n' \
             '## Download' \
             '' \
             'Download the Apple Silicon ZIP attached below, extract it, and move MAPI.app to Applications.' \
             '' \
-            '> This preview is not signed or notarized yet. macOS may require explicit approval in System Settings > Privacy & Security before opening it.' \
+            '> This preview has an ad-hoc integrity signature but is not signed with an Apple Developer certificate or notarized. macOS may require explicit approval in System Settings > Privacy & Security before opening it.' \
             '' \
             'The `.sha256` file can be used to verify the integrity of the download.' \
             '' \
