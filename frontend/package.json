@@ -16,6 +16,6 @@
   },
   "type": "module",
   "scripts": {"dev": "vite", "build": "node node_modules/typescript/lib/tsc.js && node node_modules/vite/bin/vite.js build", "desktop:dev": "tauri dev", "desktop:build": "tauri build", "ios:init": "tauri ios init", "ios:dev": "tauri ios dev"},
-  "dependencies": {"react": "18.3.1", "react-dom": "18.3.1", "lucide-react": "1.34.0"},
+  "dependencies": {"react": "18.3.1", "react-dom": "18.3.1", "lucide-react": "1.37.0"},
   "devDependencies": {"@tauri-apps/cli": "^2.8.0", "@vitejs/plugin-react": "6.1.1", "vite": "8.2.2", "typescript": "7.0.2", "@types/react": "18.3.18", "@types/react-dom": "18.3.5"}
 }
