@@ -1,7 +1,7 @@
 fastapi==0.141.1
 uvicorn[standard]==0.52.4
 SQLAlchemy==2.0.52
-pydantic-settings==2.15.0
+pydantic-settings==2.16.2
 python-multipart==0.0.32
 ofxparse==0.21
 pytest==9.1.1
